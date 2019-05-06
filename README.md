@@ -55,6 +55,13 @@ You are welcome to use any Python library of choice, even replacing some of the 
 
 Should return photo records in JSON format.
 
+###### Design decisions:
+- Should the request go through, it will return a JSON array.
+- A JSON-formatted response with the http status code `500` will be returned in case of a server error.
+```javascript
+{"success":false, "error": "An unexpected error has occurred."}
+```
+
 #### 3. Add web endpoint for triggering the processing of pending photos
 
 - Method: `POST`
@@ -63,6 +70,22 @@ Should return photo records in JSON format.
 Endpoint should be accepting one or more photo UUIDs as JSON input.  
 It should be producing one RabbitMQ message on a queue named `photo-processor` for every photo to be processed.
 
+###### Design decisions:
+- The request should include the data as a JSON array of UUIDs with the 'Content-Type: application/json'. See the example below:
+`curl -i -H 'Accept: application/json' -H 'Content-Type: application/json' -X POST -d '{"data":["29ed9f47-8f7e-4a69-9187-bf0ade0c15b5", "29ed9f47-8f7e-4a69-9187-bf0ade0c15b52"]}' "http://localhost:3000/photos/process"`
+
+- Should the request go through, it will return the results in JSON format as follow:
+```javascript
+[{"success":true, "uuid": "<UUID1>", "error":""},
+{"success":false, "uuid": "<UUID2>", "error": "unexpected error"},
+{"success":true, "uuid": "<UUID3>", "error": ""}]
+```
+
+- A JSON-formatted response with the http status code `500` will be returned in case of a server error.
+```javascript
+{"success":false, "error": "An unexpected error has occurred."}
+```
+ 
 #### 4. Create RabbitMQ consumer
 
 Create a barebones RabbitMQ consumer that is listening on the `photo-proccessor` queue, processing one message at a time.   

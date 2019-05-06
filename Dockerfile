@@ -14,5 +14,6 @@ RUN pipenv install --deploy --system
 
 COPY scripts scripts
 COPY src src
-
-CMD scripts/start.sh
+RUN chmod +x scripts/start.sh
+RUN chmod +x scripts/wait-for.sh
+CMD ./scripts/start.sh

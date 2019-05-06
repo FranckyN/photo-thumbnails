@@ -10,6 +10,8 @@ pep8 = "*"
 flask = "*"
 pillow = "*"
 psycopg2-binary = "*"
+pika = "*"
+requests = "*"
 
 [requires]
 python_version = "3.7"

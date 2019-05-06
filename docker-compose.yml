@@ -9,8 +9,9 @@ services:
     environment:
       PG_CONNECTION_URI: ${PG_CONNECTION_URI}
       AMQP_URI: ${AMQP_URI}
+      STORAGE_THUMBS: ${STORAGE_THUMBS}
     volumes:
-      - /waldo-app-thumbs
+      - ${STORAGE_THUMBS}
     depends_on:
       - postgres
       - rabbitmq
