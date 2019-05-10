@@ -12,7 +12,7 @@ def Logger():
 def create_app():
     app_ct = Flask(__name__)
     return app_ct
-    
+
 app = create_app()
 
 

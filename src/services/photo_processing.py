@@ -18,6 +18,7 @@ import logging
 def Logger():
     return logging.getLogger('photo_processor')
 
+
 class FileNotDownloadedException(Exception):
     """
     Custom exception raised if there in an issue with the requests.response
@@ -64,12 +65,13 @@ def download_process_photo(photo_url: str, photo_details) -> bool:
         image_name = urlparse(photo_url)
         image_name = os.path.basename(image_name.path)
         source_image = download_image(photo_url)
-        destination_size, thumbnail_path = \
-        generate_thumbnail(source_image, image_name,
-                           os.environ['STORAGE_THUMBS'])
+        destination_size, \
+        thumbnail_path = generate_thumbnail(source_image, image_name,
+                                            os.environ['STORAGE_THUMBS'])
         Logger().info(" {} / {}".format(destination_size, thumbnail_path))
         temp_dict = {'url': os.path.relpath(thumbnail_path, os.getcwd()),
-                     'width': destination_size[0], 'height': destination_size[1]}
+                     'width': destination_size[0],
+                     'height': destination_size[1]}
         photo_details.update(temp_dict)
         return True
     except FileNotDownloadedException as error:
@@ -91,7 +93,7 @@ def download_image(image_url: str) -> str:
     response = requests.get(image_url)
     if not response:
         error_message = "An error occurred while downloading {}"
-        raise FileNotDownloadedException({"message": error_message. \
+        raise FileNotDownloadedException({"message": error_message.
                                           format(image_url),
                                           "response": str(response)})
     temp_image_name = tempfile.mktemp()
@@ -111,5 +113,5 @@ def generate_thumbnail(source_image_path: str,
     im.thumbnail((320, 320), Image.LANCZOS)
     destination_file = "{}/{}".format(storage_directory, image_name)
     Logger().debug("destination_file => {}".format(destination_file))
-    im.save(destination_file, im.format) 
+    im.save(destination_file, im.format)
     return im.size, destination_file

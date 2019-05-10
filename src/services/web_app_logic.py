@@ -10,6 +10,7 @@ import apps_utils as apu
 import apps_db_manager as apdbm
 import logging
 
+
 def Logger():
     return logging.getLogger('web_app_logger')
 
@@ -53,7 +54,7 @@ def photo_submit_task(client_photo_uuid: str) -> bool:
         Logger().debug("photo_status = {}".format(photo_status))
         if not photo_status:
             return False, ("photo not found or "
-                            "something is wrong with the database")
+                           "something is wrong with the database")
         elif photo_status != 'completed':
             to_process_notification('photo-proccessor', client_photo_uuid)
             return True, ''
@@ -70,7 +71,7 @@ def to_process_notification(queue_name: str, client_photo_uuid: str) -> bool:
     :param queue_name the name of the queue.
     :param client_photo_uuid uuid of the photo to be processed.
     """
-    #This is a barebones implementation
+    # This is a barebones implementation
     connection = None
     try:
         parameters = pika.URLParameters(os.environ['AMQP_URI'])
@@ -86,6 +87,7 @@ def to_process_notification(queue_name: str, client_photo_uuid: str) -> bool:
                               delivery_mode=2,
                               content_encoding='utf-8'
                              ))
-        Logger().info("Sent {} to queue {}".format(client_photo_uuid, queue_name))
+        Logger().info("Sent {} to queue {}".format(client_photo_uuid,
+                                                   queue_name))
     finally:
         apu.close_connection_nothrow(connection)

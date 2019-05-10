@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuite errors="0" failures="0" name="pytest" skipped="0" tests="7" time="25.474">
+    <testcase classname="test_app" file="test_app.py" line="14" name="test_status_ok_pending" time="15.086"/>
+    <testcase classname="test_app" file="test_app.py" line="19" name="test_json_ok" time="0.009"/>
+    <testcase classname="test_app" file="test_app.py" line="24" name="test_photo_count" time="0.008"/>
+    <testcase classname="test_app" file="test_app.py" line="29" name="test_pending_count" time="0.036"/>
+    <testcase classname="test_app" file="test_app.py" line="43" name="test_photo_process_bad_uuid" time="0.009"/>
+    <testcase classname="test_app" file="test_app.py" line="54" name="test_photo_process_good_uuid" time="5.093"/>
+    <testcase classname="test_app" file="test_app.py" line="72" name="test_process_missing_photo" time="5.067"/>
+</testsuite>

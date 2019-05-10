@@ -12,10 +12,12 @@ from contextlib import contextmanager
 import logging
 import apps_logger as apl
 
+
 def Logger():
     return logging.getLogger(__name__)
 
 apl.configure_logger(Logger())
+
 
 class db_manager:
     """
@@ -42,7 +44,6 @@ class db_manager:
                     cls.__pool.putconn(connection)
             except:
                 pass
-
 
     @classmethod
     @contextmanager
@@ -112,7 +113,7 @@ class db_manager:
         try:
             with cls.get_cursor() as cursor:
                 the_query = "SELECT {} FROM photos WHERE uuid=%s". \
-                format(column)
+                             format(column)
                 cursor.execute(the_query, (current_uuid,))
                 photo_column = cursor.fetchone()
                 if cursor.rowcount > 0:

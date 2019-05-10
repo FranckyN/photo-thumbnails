@@ -59,7 +59,7 @@ def connect_to_rabbitmq():
             apu.close_connection_nothrow(connection)
         time.sleep(20)
     message_critical = ("closing application after {} connection "
-                        "attempts to rabbitmq broker")      
+                        "attempts to rabbitmq broker")
     Logger().critical(message_critical.format(curr_retry))
 
 

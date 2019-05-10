@@ -104,4 +104,20 @@ Consumer should be running on the `waldo-app` container alongside the web app.
 ### Deliverables
 
 - Solution should be using Python 3.7.x, and extending the given setup.
-- Git repository with any required instructions for running it, uploaded on GitHub or GitLab or BitBucket. 
+- Git repository with any required instructions for running it, uploaded on GitHub or GitLab or BitBucket.
+
+### Test
+I've included a suite of integration test cases using pytest, in a new Docker container.
+All test files are located under `integration_tests` folder.
+
+#### Instructions
+In the project root directory
+- `make test`
+
+The test results will be displayed in the console and an XML report ([integration test results](integration-tests/report.xml)) generated in the volume `integration-tests_test-result`
+
+
+
+
+
+

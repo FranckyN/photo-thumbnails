@@ -1,0 +1,67 @@
+version: '3.7'
+
+services:
+  app:
+    build: ..
+    container_name: waldo-app-test
+    ports:
+      - 3000:3000
+    environment:
+      PG_CONNECTION_URI: ${PG_CONNECTION_URI_TEST}
+      AMQP_URI: ${AMQP_URI_TEST}
+      STORAGE_THUMBS: ${STORAGE_THUMBS}
+    volumes:
+      - thumbs-folder-test:${STORAGE_THUMBS}
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  test-app:
+    build: .
+    container_name: test-app
+    volumes:
+      - type: volume
+        source: thumbs-folder-test
+        target: ${STORAGE_THUMBS}
+        volume:
+          nocopy: true
+      - test-result:/results
+    environment:
+      PG_CONNECTION_URI: ${PG_CONNECTION_URI_TEST}
+      AMQP_URI: ${AMQP_URI_TEST}
+      STORAGE_THUMBS: ${STORAGE_THUMBS}
+    depends_on:
+      - app
+      - postgres
+      - rabbitmq
+
+  postgres:
+    container_name: postgres-test
+    image: postgres:11.2-alpine
+    ports:
+        - 5432:5432
+    volumes:
+        - psgrdata-test:/var/lib/postgresql/data   
+    environment:
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DATABASE}
+  
+  rabbitmq:
+    container_name: rabbitmq-test
+    image: rabbitmq:3.7-management-alpine
+    ports:
+      - 15672:15672
+      - 5672:5672
+    volumes:
+        - rabbitdata-test:/var/lib/postgresql/data   
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "secretcookie"
+      RABBITMQ_DEFAULT_USER: ${AMQP_USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${AMQP_PASSWORD}
+
+volumes:
+  psgrdata-test:
+  rabbitdata-test:
+  thumbs-folder-test:
+  test-result:
